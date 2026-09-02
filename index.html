@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4 뽀모도로로 세상을 바꾸자!</title>
+<link rel="stylesheet" href="styles.css">
+<script src="assets/mp4box.all.min.js"></script>
+</head>
+<body>
+
+<div class="nav">
+  <div class="nav-brand"><span class="nav-brand-num">4</span> 뽀모도로로 세상을 바꾸자!</div>
+  <div style="display:flex;align-items:center;gap:var(--space-4);">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span style="font-size:12px;color:var(--color-neutral-700);">테마</span>
+      <div id="theme-swatches" style="display:flex;align-items:center;gap:8px;"></div>
+    </div>
+    <span class="tag tag-accent today-count">오늘&nbsp;<span id="today-count">0</span>&nbsp;뽀모</span>
+  </div>
+</div>
+
+<div class="layout">
+
+  <div class="timer-col">
+    <div id="template-badge" class="tag tag-outline template-badge" hidden></div>
+
+    <div class="dial-wrap">
+      <svg id="dial" class="dial-svg idle" width="300" height="300" viewBox="0 0 300 300">
+        <circle cx="150" cy="150" r="130" fill="none" stroke="var(--color-divider)" stroke-width="1"></circle>
+        <circle id="dial-progress" cx="150" cy="150" r="130" fill="none" stroke="var(--color-accent)" stroke-width="3" stroke-linecap="round" transform="rotate(-90 150 150)"></circle>
+        <line id="dial-handle-line" x1="150" y1="150" x2="150" y2="20" stroke="var(--color-accent)" stroke-width="1.5"></line>
+        <circle id="dial-handle" cx="150" cy="20" r="9" fill="var(--color-bg)" stroke="var(--color-accent)" stroke-width="2"></circle>
+      </svg>
+      <div class="dial-readout">
+        <div id="display-time" class="dial-time">25:00</div>
+        <div id="status-label" class="dial-status">준비</div>
+      </div>
+    </div>
+
+    <div id="manual-input" class="manual-input">
+      <input id="input-minutes" class="input" type="number" min="0" max="59" value="25">
+      <span class="unit">분</span>
+      <input id="input-seconds" class="input" type="number" min="0" max="59" value="0">
+      <span class="unit">초</span>
+    </div>
+
+    <div class="controls-row">
+      <button id="btn-start" type="button" class="btn btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="6 3 20 12 6 21 6 3"></polygon></svg>
+        시작
+      </button>
+      <button id="btn-pause" type="button" class="btn btn-secondary" hidden>일시정지</button>
+      <button id="btn-reset" type="button" class="btn btn-ghost" hidden>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+        리셋
+      </button>
+    </div>
+  </div>
+
+  <div class="side-col">
+    <div class="seg" role="radiogroup" style="align-self:flex-start;">
+      <label class="seg-opt"><input type="radio" name="tab" id="tab-mode" checked>모드</label>
+      <label class="seg-opt"><input type="radio" name="tab" id="tab-template">템플릿</label>
+    </div>
+
+    <div id="panel-mode" class="mode-list"></div>
+    <div id="panel-template" class="template-list" hidden></div>
+  </div>
+</div>
+
+<div class="track-section">
+  <div class="track-inner">
+    <div class="track">
+      <div class="track-line-blur"></div>
+      <div class="track-surface"></div>
+      <div class="track-lane-line track-lane-line-top"></div>
+      <div class="track-lane-line track-lane-line-bottom"></div>
+      <div class="track-line-dashed"></div>
+
+      <div class="km-marker" style="left:25%;">
+        <div class="km-marker-label">25%</div>
+        <div class="km-marker-line"></div>
+      </div>
+      <div class="km-marker" style="left:50%;">
+        <div class="km-marker-label">50%</div>
+        <div class="km-marker-line"></div>
+      </div>
+      <div class="km-marker" style="left:75%;">
+        <div class="km-marker-label">75%</div>
+        <div class="km-marker-line"></div>
+      </div>
+
+      <div id="grass"></div>
+
+      <svg class="tree" width="106" height="125" viewBox="0 0 56 66" style="left:32%;">
+        <ellipse cx="28" cy="63" rx="16" ry="3" fill="var(--color-neutral-900)" opacity="0.12"></ellipse>
+        <line x1="28" y1="60" x2="28" y2="34" stroke="#6b5a3f" stroke-width="4" stroke-linecap="round"></line>
+        <circle cx="17" cy="26" r="13" fill="#7f9670" stroke="#54614a" stroke-width="1.5"></circle>
+        <circle cx="34" cy="22" r="15" fill="#8ea67d" stroke="#54614a" stroke-width="1.5"></circle>
+        <circle cx="26" cy="12" r="12" fill="#9bb48a" stroke="#54614a" stroke-width="1.5"></circle>
+      </svg>
+      <svg class="tree" width="87" height="106" viewBox="0 0 46 56" style="left:58%;">
+        <ellipse cx="23" cy="53" rx="13" ry="2.5" fill="var(--color-neutral-900)" opacity="0.12"></ellipse>
+        <line x1="23" y1="50" x2="23" y2="28" stroke="#6b5a3f" stroke-width="3.5" stroke-linecap="round"></line>
+        <circle cx="14" cy="22" r="10.5" fill="#7f9670" stroke="#54614a" stroke-width="1.5"></circle>
+        <circle cx="28" cy="18" r="12.5" fill="#8ea67d" stroke="#54614a" stroke-width="1.5"></circle>
+        <circle cx="21" cy="10" r="10" fill="#9bb48a" stroke="#54614a" stroke-width="1.5"></circle>
+      </svg>
+
+      <svg width="70" height="60" viewBox="0 0 70 60" fill="none" class="track-start">
+        <line x1="4" y1="60" x2="4" y2="4" stroke="var(--color-neutral-600)" stroke-width="3"></line>
+        <line x1="66" y1="60" x2="66" y2="4" stroke="var(--color-neutral-600)" stroke-width="3"></line>
+        <path d="M4 4 Q35 -14 66 4" fill="none" stroke="var(--color-accent)" stroke-width="4"></path>
+        <path d="M4 4 Q35 -14 66 4 L66 14 Q35 -4 4 14 Z" fill="var(--color-accent)" opacity="0.15"></path>
+        <rect x="14" y="-13" width="42" height="16" rx="2" fill="var(--color-bg)" stroke="var(--color-accent)" stroke-width="1.5"></rect>
+        <text x="35" y="-1.5" text-anchor="middle" font-family="var(--font-heading)" font-weight="600" font-size="10" letter-spacing="0.5" fill="var(--color-accent-700)">START</text>
+      </svg>
+
+      <svg width="70" height="82" viewBox="0 0 70 82" fill="none" class="track-finish">
+        <line x1="8" y1="82" x2="8" y2="4" stroke="var(--color-neutral-600)" stroke-width="3"></line>
+        <path d="M8 6 L52 14 L8 24 Z" fill="var(--color-bg)" stroke="var(--color-neutral-600)" stroke-width="1.5"></path>
+        <rect x="12" y="8.3" width="6.5" height="4.3" fill="var(--color-neutral-900)"></rect>
+        <rect x="25" y="9.6" width="6.5" height="4.3" fill="var(--color-neutral-900)"></rect>
+        <rect x="38" y="10.9" width="6.5" height="4.3" fill="var(--color-neutral-900)"></rect>
+        <rect x="18.5" y="12.6" width="6.5" height="4.3" fill="var(--color-neutral-900)"></rect>
+        <rect x="31.5" y="13.9" width="6.5" height="4.3" fill="var(--color-neutral-900)"></rect>
+      </svg>
+
+      <div id="runner" class="runner" style="left:0%;">
+        <!-- Color and the grayscale alpha matte are two separate video files,
+             decoded frame-by-frame up front with WebCodecs (see app.js) and
+             baked into one array of pre-composited frames indexed by frame
+             number — not played back live, so there's no real-time decode
+             timing gap between the two streams for a hardware decoder to
+             desync. The canvas below just blits the current frame. -->
+        <canvas id="canvas-runner" class="runner-canvas" style="display:none;"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="builder-backdrop" class="dialog-backdrop" hidden>
+  <div class="dialog" role="dialog" aria-modal="true" style="max-width:440px;">
+    <div class="dialog-title">템플릿 만들기</div>
+    <div class="dialog-body">
+      <div class="field"><label>템플릿 이름</label>
+        <input id="builder-name" class="input" placeholder="예: 나만의 뽀모도로">
+      </div>
+      <div id="builder-steps" class="builder-steps"></div>
+      <div class="builder-add-row">
+        <button type="button" id="add-focus" class="btn btn-secondary">+ 집중 25분</button>
+        <button type="button" id="add-short" class="btn btn-secondary">+ 짧은 휴식 5분</button>
+        <button type="button" id="add-long" class="btn btn-secondary">+ 긴 휴식 15분</button>
+      </div>
+      <label class="radio" style="margin-top:var(--space-4);">
+        <input type="checkbox" id="builder-repeat"><span class="dot"></span>계속 반복하기
+      </label>
+    </div>
+    <div class="dialog-actions">
+      <button type="button" id="builder-cancel" class="btn btn-ghost">취소</button>
+      <button type="button" id="builder-save" class="btn btn-primary" disabled>저장</button>
+    </div>
+  </div>
+</div>
+
+<audio id="audio-focus" src="assets/musics/concentration.mp3" preload="none"></audio>
+<audio id="audio-short" src="assets/musics/short_rest.mp3" preload="none"></audio>
+<audio id="audio-long" src="assets/musics/long_rest.mp3" preload="none"></audio>
+<audio id="audio-custom" src="assets/musics/others.mp3" preload="none"></audio>
+
+<script src="app.js"></script>
+</body>
+</html>
